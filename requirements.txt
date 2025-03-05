@@ -1,0 +1,4 @@
+PyYAML>=6.0
+paramiko>=2.10.0
+requests>=2.27.0
+python-dotenv>=0.20.0

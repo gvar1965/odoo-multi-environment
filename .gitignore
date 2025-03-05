@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+env/
+venv/
+build/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Logs
+logs/
+*.log
+
+# Archivos de configuración con credenciales
+config/production.yaml
+config/uat.yaml
+config/testing.yaml
+config/training.yaml
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de editores/IDEs
+.idea/
+.vscode/
+*.swp
+*.swo

@@ -1,0 +1,18 @@
+# Configuración por defecto para todos los entornos Odoo
+---
+# Versión de Odoo a instalar
+odoo_version: "16.0"
+
+# Configuración de base de datos
+db_host: "localhost"
+db_port: 5432
+create_db_user: true
+
+# Configuración Web
+install_nginx: true
+use_ssl: false
+
+# Módulos adicionales
+install_modules:
+  - crm_contacto_comercial
+  - crm_dashboard_bi
