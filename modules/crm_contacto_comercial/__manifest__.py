@@ -16,7 +16,10 @@
     'depends': ['crm', 'sale', 'mail', 'sales_team'],
     'data': [
         'security/ir.model.access.csv',
-        'views/crm_contacto_comercial_views.xml',
+        'data/ir_sequence_data.xml',
+        'views/contacto_comercial_view.xml',
+        'views/crm_lead_view.xml',
+        'views/crm_lead_productos_solicitados_view.xml',
     ],
     'installable': True,
     'application': True,

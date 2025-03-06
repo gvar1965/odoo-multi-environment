@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sobreescribir acción de crear oportunidad -->
+    <record id="crm.crm_lead_action_pipeline" model="ir.actions.act_window">
+        <field name="name">Oportunidades</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,tree,graph,form,calendar,pivot,activity</field>
+        <field name="domain">[('type','=','opportunity')]</field>
+        <field name="context">{
+            'default_type': 'opportunity',
+            'search_default_assigned_to_me': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Crea tu primera oportunidad
+            </p><p>
+            Gestiona tus oportunidades de ventas mediante acciones y próximos pasos.
+            </p>
+        </field>
+    </record>
+
+    <!-- Nueva acción para crear oportunidad con advertencia -->
+    <record id="action_crm_lead_create_with_warning" model="ir.actions.act_window">
+        <field name="name">Crear Oportunidad</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{
+            'default_type': 'opportunity',
+            'default_origin_type': 'otro',
+            'show_warning': True
+        }</field>
+    </record>
+
+    <!-- Modificar menú para usar la acción con advertencia -->
+    <record id="crm.crm_lead_opportunities_tree_view" model="ir.ui.menu">
+        <field name="action" ref="action_crm_lead_create_with_warning"/>
+    </record>
+
+    <!-- Modificar la vista del formulario de Lead para alertar sobre leads directos -->
+    <record id="crm_lead_view_form_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Añadir alerta en la parte superior -->
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-warning" role="alert" 
+                     attrs="{'invisible': ['|', ('contacto_comercial_id', '!=', False), ('origin_type', '=', 'contacto')]}">
+                    <strong>Nota:</strong> Esta oportunidad no está vinculada a un contacto comercial registrado. 
+                    Para un mejor seguimiento, considere registrar todos los contactos con clientes.
+                </div>
+            </xpath>
+            
+            <!-- Añadir pestaña de Origen -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Origen" name="origin">
+                    <group>
+                        <field name="origin_type"/>
+                        <field name="contacto_comercial_id" attrs="{'invisible': [('origin_type', '!=', 'contacto')], 'required': [('origin_type', '=', 'contacto')]}"/>
+                        <field name="licitacion_ref" attrs="{'invisible': [('origin_type', '!=', 'licitacion')], 'required': [('origin_type', '=', 'licitacion')]}"/>
+                        <field name="proveedor_id" attrs="{'invisible': [('origin_type', '!=', 'proveedor')], 'required': [('origin_type', '=', 'proveedor')]}"/>
+                    </group>
+                    <group string="Análisis de Producto/Solución" attrs="{'invisible': [('is_producto_solicitado', '=', False)]}">
+                        <field name="is_producto_solicitado"/>
+                        <field name="producto_solicitado" attrs="{'required': [('is_producto_solicitado', '=', True)]}"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
